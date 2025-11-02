@@ -5,7 +5,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-  checkoutProducts
+  updateStock
 } from '../controllers/product.controller.js';
 
 const router = express.Router();
@@ -27,7 +27,7 @@ router.put('/:id', updateProduct);
 // delete
 router.delete('/:id', deleteProduct);
 
-// post
-router.post('/checkout', checkoutProducts);
+// actualizar stock después de una compra
+router.patch('/update-stock', updateStock);
 
 export default router;

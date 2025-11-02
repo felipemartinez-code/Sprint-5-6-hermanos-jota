@@ -26,6 +26,52 @@ export const getProductById = async (req, res) => {
   }
 };
 
+export const updateStock = async (req, res) => {
+    try {
+        
+        const itemsToUpdate = req.body.items; 
+
+        if (!itemsToUpdate || itemsToUpdate.length === 0) {
+            return res.status(400).json({ message: 'La lista de ítems para actualizar stock está vacía.' });
+        }
+
+        
+        for (const item of itemsToUpdate) {
+          
+            const productDB = await Product.findById(item.id); 
+            
+            if (!productDB) {
+                return res.status(404).json({ message: `Producto con ID ${item.id} no encontrado.` });
+            }
+            
+            if (productDB.stock < item.quantity) {
+                
+                return res.status(400).json({ 
+                    message: `Stock insuficiente para ${productDB.nombre}. Solo quedan ${productDB.stock} unidades.`,
+                    product: productDB.nombre 
+                });
+            }
+        }
+        
+       
+        const updatedProducts = [];
+        for (const item of itemsToUpdate) {
+          
+            const updatedProduct = await Product.findByIdAndUpdate(
+                item.id,
+                { $inc: { stock: -item.quantity } }, 
+                { new: true }
+            );
+            updatedProducts.push(updatedProduct);
+        }
+
+        res.status(200).json({ message: 'Stock actualizado exitosamente tras la compra.', updatedProducts });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error en la actualización de stock', error: error.message });
+    }
+};
+
 // post
 export const createProduct = async (req, res) => {
   try {

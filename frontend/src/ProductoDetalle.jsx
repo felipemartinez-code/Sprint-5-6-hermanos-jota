@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom'; 
 
-
 const API_URL = 'http://localhost:5000/api/productos'; 
 
-function ProductoDetalle({ addToCart }) { 
+// 🚨 CLAVE: El componente ahora debe recibir 'cart' como prop desde App.jsx
+function ProductoDetalle({ addToCart, cart }) { 
     // MongoDB usa _id. El parámetro de la URL se llama 'id'
     const { id } = useParams(); 
     const navigate = useNavigate();
@@ -22,7 +22,6 @@ function ProductoDetalle({ addToCart }) {
                 return res.json();
             })
             .then(data => {
-                
                 setProducto(data); 
                 setCargando(false);
             })
@@ -33,10 +32,14 @@ function ProductoDetalle({ addToCart }) {
             });
     }, [id]); 
     
+        // 🚨 1. CÁLCULO DE STOCK EN CARRITO Y ESTADO DE DESHABILITACIÓN
+    // Utilizamos '?' para asegurar que 'producto' existe antes de acceder a sus propiedades
+    const currentCartQuantity = cart.find(item => item.id === producto?._id)?.quantity || 0;
+    const isDisabled = (producto?.stock <= 0) || (currentCartQuantity >= producto?.stock);
     
     const handleAddToCart = () => {
+        // La lógica de validación se ejecuta en App.jsx, aquí solo disparamos
         if (producto) {
-            
             addToCart(producto); 
             setMensajeVisible(true);
             setTimeout(() => setMensajeVisible(false), 3000);
@@ -45,7 +48,6 @@ function ProductoDetalle({ addToCart }) {
     
     
     const handleDelete = async () => {
-        //confirmacion del usuario
         if (!window.confirm(`¿Estás seguro de que quieres eliminar el producto "${producto.nombre}"? Esta acción es irreversible.`)) {
             return;
         }
@@ -60,7 +62,6 @@ function ProductoDetalle({ addToCart }) {
                 throw new Error(errorData.message || 'Error al eliminar el producto.');
             }
 
-            
             navigate('/catalogo', { state: { successMessage: 'Producto eliminado con éxito.' } });
 
         } catch (err) {
@@ -82,6 +83,9 @@ function ProductoDetalle({ addToCart }) {
         return <main className="featured-products"><div className="catalogo-header">Producto no encontrado.</div></main>;
     }
 
+
+
+    
     // Renderizado del producto
     return (
         <main className="featured-products"> 
@@ -93,7 +97,7 @@ function ProductoDetalle({ addToCart }) {
             
             {mensajeVisible && (
                 <div className="cart-confirmation-message">
-                    ✅ ¡**{producto.nombre}** añadido al carrito!
+                    ✅ ¡{producto.nombre} añadido al carrito!
                 </div>
             )}
             
@@ -119,15 +123,19 @@ function ProductoDetalle({ addToCart }) {
                         {producto.descripcion || 'Descripción detallada del producto no disponible.'}
                     </p>
                     
+                    {/* Indicador de stock y cantidad en carrito */}
                     <p>Stock Disponible: **{producto.stock || 0}**</p>
+                    {currentCartQuantity > 0 && 
+                        <p style={{color: 'orange', fontWeight: 'bold'}}>Tienes {currentCartQuantity} en el carrito.</p>}
 
-                    {/* Botón para Carrito */}
+
+                    {/* 🚨 2. BOTÓN DE AÑADIR AL CARRITO CON VALIDACIÓN DE STOCK */}
                     <button 
                         className="btn btn-add-to-cart-detail"
                         onClick={handleAddToCart}
-                        disabled={producto.stock <= 0}
+                        disabled={isDisabled} // 🚨 Aplica la lógica de deshabilitación
                     >
-                        {producto.stock > 0 ? 'Añadir al Carrito' : 'Agotado'}
+                        {producto.stock <= 0 ? 'Agotado' : (isDisabled ? 'Límite en Carrito' : 'Añadir al Carrito')}
                     </button>
                     
                     
@@ -136,7 +144,6 @@ function ProductoDetalle({ addToCart }) {
                         <button 
                             className="btn" 
                             style={{ backgroundColor: '#007bff', marginRight: '10px' }}
-                            // Navega al formulario de edición con el _id del producto
                             onClick={() => navigate(`/admin/editar-producto/${producto._id}`)}
                         >
                             Editar

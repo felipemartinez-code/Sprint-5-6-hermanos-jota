@@ -8,7 +8,6 @@ function ProductForm() {
     const navigate = useNavigate();
     const { id } = useParams(); 
     
-    
     const [formData, setFormData] = useState({
         nombre: '',
         descripcion: '',
@@ -20,7 +19,6 @@ function ProductForm() {
     const [error, setError] = useState(null);
     const isEditMode = !!id; 
 
-    
     useEffect(() => {
         if (isEditMode) {
             setLoading(true);

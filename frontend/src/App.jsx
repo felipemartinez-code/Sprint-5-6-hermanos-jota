@@ -38,6 +38,32 @@ const CatalogWrapper = () => {
     );
 };
 
+const addToCart = (productToAdd) => {
+    
+    const productId = productToAdd._id || productToAdd.id; 
+    const existingItem = cart.find(item => item.id === productId);
+    const price = Number(productToAdd.precio); 
+
+    const currentStock = Number(productToAdd.stock || 0); 
+    
+    // ESTE IF VERIFICA QUE NO SE SOBREPASE EL STOCK
+    if (existingItem && existingItem.quantity >= currentStock) {
+
+        window.alert(`No puedes añadir más ${productToAdd.nombre}. Límite de stock real (${currentStock}) alcanzado.`);
+        return; // Bloquea la adición
+    }
+
+    if (existingItem) {
+        setCart(cart.map(item =>
+            item.id === productId
+                ? { ...item, quantity: item.quantity + 1 } 
+                : item
+        ));
+    } else {
+
+        setCart([...cart, { ...productToAdd, quantity: 1, id: productId, precio: price, stock: currentStock }]);
+    }
+};
 
 function App() {
     
@@ -121,7 +147,7 @@ function App() {
                    
                     <Route 
                         path="/productos/:id" 
-                        element={<ProductoDetalle addToCart={addToCart} />} 
+                        element={<ProductoDetalle addToCart={addToCart} cart={cart} />} 
                     />
                     
                     <Route 
