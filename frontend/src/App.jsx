@@ -7,7 +7,8 @@ import ListaProductos from './ListaProductos.jsx';
 import ProductoDetalle from './ProductoDetalle.jsx';
 import Carrito from './Carrito.jsx'; 
 import Contacto from './Contacto.jsx'; 
-import ProductForm from './ProductForm'; // Formulario de CRUD
+import ProductForm from './ProductForm';
+import './App.css'; 
 
 const HeroPage = () => (
     <main>
@@ -84,7 +85,6 @@ function App() {
     
     return (
         <Router>
-            {/* ESTRUCTURA HTML BÁSICA PARA HEADER */}
             <header className="header">
                 <Link to="/" className="logo-container">
                     <img src="\public\assets\Fotos_hermanos_jota\logo.svg" alt="Hermanos Jota Logo" />
@@ -124,7 +124,6 @@ function App() {
                         element={<ProductoDetalle addToCart={addToCart} />} 
                     />
                     
-                    {/* Ruta del Carrito */}
                     <Route 
                         path="/carrito" 
                         element={<Carrito 

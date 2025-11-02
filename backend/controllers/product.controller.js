@@ -72,3 +72,41 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar el producto', error: error.message });
   }
 };
+
+
+
+
+export const checkoutProducts = async (req, res) => {
+  
+  const { cart } = req.body;
+
+  if (!cart || !Array.isArray(cart) || cart.length === 0) {
+    return res.status(400).json({ message: 'El carrito está vacío' });
+  }
+
+  try {
+    
+    for (const item of cart) {
+      const product = await Product.findById(item.productId);
+
+      if (!product) {
+        return res.status(404).json({ message: `Producto con ID ${item.productId} no encontrado` });
+      }
+
+      if (product.stock < item.cantidad) {
+        return res.status(400).json({
+          message: `Stock insuficiente para ${product.nombre}. Stock disponible: ${product.stock}, Solicitado: ${item.cantidad}`
+        });
+      }
+    }   
+    for (const item of cart) {
+      await Product.findByIdAndUpdate(item.productId, {
+        $inc: { stock: -item.cantidad }
+      });
+    }
+    res.status(200).json({ message: 'Compra finalizada exitosamente. Stock actualizado.' });
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error en el servidor durante el checkout', error: error.message });
+  }
+};
