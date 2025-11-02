@@ -5,7 +5,7 @@ function Navbar({ cartCount, onViewChange }) {
   return (
     <header className="header">
       <div className="logo-container">
-        <img src="/assets/Fotos_hermanos_jota/logo.svg" alt="Logo de Mueblería Jota" style={{ height: '60px' }} />
+        <img src="..\assets\Fotos_hermanos_jota\logo.svg" alt="Logo de Mueblería Jota" style={{ height: '60px' }} />
         <h1>Mueblería Hermanos Jota</h1>
       </div>
       <nav className="nav-menu">

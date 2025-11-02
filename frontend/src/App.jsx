@@ -87,7 +87,7 @@ function App() {
             {/* ESTRUCTURA HTML BÁSICA PARA HEADER */}
             <header className="header">
                 <Link to="/" className="logo-container">
-                    <img src="/assets/Fotos_Hermanos_Jota/logo.svg" alt="Hermanos Jota Logo" />
+                    <img src="\public\assets\Fotos_hermanos_jota\logo.svg" alt="Hermanos Jota Logo" />
                     <h1>Mueblería Jota</h1>
                 </Link>
                 <nav className="nav-menu">

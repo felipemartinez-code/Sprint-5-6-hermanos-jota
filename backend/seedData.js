@@ -70,7 +70,7 @@ const productData = [
         descripcion: 'El sillón Copacabana es un llamado a la relajación y el confort. Su diseño amplio y sus cojines extra suaves te invitan a un merecido descanso.',
         precio: 900,
         stock: 10,
-        // 🚨 NOTA: Se corrige el guion bajo en la ruta para consistencia
+        
         imagenUrl: '/assets/Fotos_hermanos_jota/Sillón_Copacabana.png' 
     },
     {
