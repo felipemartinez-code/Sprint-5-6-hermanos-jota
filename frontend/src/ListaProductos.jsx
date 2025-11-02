@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; 
-
+//import React from 'react';
 
 const API_URL = 'http://localhost:5000/api/productos';
 

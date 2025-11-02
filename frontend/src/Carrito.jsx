@@ -70,7 +70,7 @@ function Carrito({ cart, totalPrice, removeFromCart, clearCart, addToCart }) {
                     {cart.map(item => (
                         <div key={item.id} className="cart-item">
                             <img 
-                                src={item.imagen} 
+                                src={item.imagenUrl || item.imagen} 
                                 alt={item.nombre} 
                                 className="cart-item-image"
                             />
