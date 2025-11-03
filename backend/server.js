@@ -20,6 +20,9 @@ mongoose.connect(mongoURI)
 
 
 const app = express();
+const corsOptions = {
+  origin: 'sprint-5-6-hermanos-jota.vercel.app'
+  };
 const PORT = process.env.PORT || 5000;
 
 
