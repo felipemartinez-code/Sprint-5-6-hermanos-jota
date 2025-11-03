@@ -27,3 +27,6 @@ Inciar backend: 1. Navegá hacia la carpeta backend en la terminal e instala las
 Iniciar Frontend: 1. Navegá hacia la carpeta Frontend en la terminal e instala las dependencias: npm install 2. Inicia la aplicación de React con: npm run dev
 
 Aclaración Importante: la carpeta backend y frontend se deben iniciar en terminales diferentes, recomendamos iniciar una con la terminal de la computadora y la otra con la terminal de Visual Studio Code o algún IDE que posea terminal
+
+LINK VERCEL: https://hermanos-jota-mocha.vercel.app/
+LINK RENDER: https://sprint-5-6-hermanos-jota.onrender.com
